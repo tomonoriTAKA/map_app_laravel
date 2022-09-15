@@ -26,6 +26,7 @@
         <input type="text" name="address" id="address" value="{{ old("address", $shop->address) }}" readonly>
     </div>
     </form> --}}
+    <div id="map" style="height:50vh;"></div>
     <button onclick="location.href='{{ route('shops.index') }}'">一覧画面</button>
     <button onclick="location.href='{{ route('shops.edit', $shop) }}'">編集</button>
     {{-- <a href="{{ route('shops.index') }}">一覧画面</a>
@@ -35,4 +36,17 @@
         @method('delete')
         <button type="submit" onclick="if(!confirm('削除していいですか?')){return false}">削除する</button>
     </form>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        @if (!empty($shop))
+            L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                .bindPopup("{{ $shop->name }}", {
+                    closeButton: false
+                })
+                .addTo(map);
+        @endif
+    </script>
 @endsection

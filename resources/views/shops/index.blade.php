@@ -9,6 +9,22 @@
             <li><a href="{{ route('shops.show', $shop) }}">{{ $shop->name }}</a></li>
         @endforeach
     </ul>
+    <div id="map" style="height:50vh;"></div>
 
     <a href="{{ route('shops.create') }}">create</a>
+@endsection
+
+@section('script')
+    @include('partial.map')
+    <script>
+        @if (!empty($shops))
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                    .bindPopup('<a href="{{ route('shops.show', $shop) }}">{{ $shop->name }}</a>', {
+                        closeButton: false
+                    })
+                    .addTo(map);
+            @endforeach
+        @endif
+    </script>
 @endsection
